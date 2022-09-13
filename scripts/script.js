@@ -1,4 +1,13 @@
-const button = document.querySelector('#new-todo button')
-console.log(button)
-button.style.backgroundColor = 'green'
+document.querySelector('#new-todo').addEventListener('submit', (e) => {
+    e.preventDefault()
+    const input = e.target.elements.text.value.trim()
+    console.log(input)
+
+
+})
+
+
+// const button= document.querySelector('.button')
+
+// button.style.backgroundColor = 'green'
 
