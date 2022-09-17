@@ -51,8 +51,6 @@ const renderTodos = (todos) => {
     const todoList = document.querySelector('#todos')
     todoList.innerHTML = ''
     if (todos.length > 0) {
-
-
         todos.forEach(todo => {
             todoList.appendChild(generateTodoDOM(todo))
 
