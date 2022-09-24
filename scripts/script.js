@@ -74,12 +74,25 @@ const generateTodoDOM = (todoObj) => {
 
 //ex 7 & 8
 const renderTodos = (todos) => {
+
+    console.log(todos)
+    const filteredTodos = todos.filter(todo =>
+        todo.title.toLowerCase().includes(filters.searchTitle.toLowerCase())
+    )
+    if (filters.showFinished && filters.showUnfinished) {
+
+    } else if (filters.showFinished) {
+        filteredTodos.filter(checkCompleted)
+    } else if (filters.showUnfinished === 'true') {
+        filteredTodos.filter(!checkCompleted)
+    }
     const todoList = document.querySelector('#todos')
     todoList.innerHTML = ''
-    if (todos.length > 0) {
-        todos.forEach(todo => {
-            todoList.appendChild(generateTodoDOM(todo))
+    console.log(filteredTodos)
 
+    if (filteredTodos.length > 0) {
+        filteredTodos.forEach(todo => {
+            todoList.appendChild(generateTodoDOM(todo))
         })
     } else {
         const messageEl = document.createElement('p')
@@ -87,10 +100,13 @@ const renderTodos = (todos) => {
         messageEl.textContent = 'There are no todos to show'
         todoList.appendChild(messageEl)
     }
-
 }
 renderTodos(todos)
 
+
+const checkCompleted = (todo) => {
+    return todo.completed
+}
 //ex 9
 const removeTodo = (title) => {
 
