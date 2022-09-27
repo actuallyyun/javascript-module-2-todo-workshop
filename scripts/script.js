@@ -1,4 +1,4 @@
-const todos = []
+let todos = []
 
 const filters = {
     searchTitle: '',
@@ -20,6 +20,21 @@ const setFilters = (updates) => {
     }
 }
 
+//ex 18
+const saveTodosToLocalStorage = () => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+}
+
+//ex19
+const fetchTodosFromLocalStorage = () => {
+    let todosJSON = localStorage.getItem('todos')
+    if (todosJSON) {
+        todos = JSON.parse(todosJSON)
+
+    } else {
+        todos = []
+    }
+}
 
 
 const createTodo = (input) => {
@@ -27,8 +42,11 @@ const createTodo = (input) => {
         title: input,
         completed: false
     })
+    saveTodosToLocalStorage()
 
 }
+
+
 
 //ex 6
 const generateTodoDOM = (todoObj) => {
@@ -75,7 +93,7 @@ const generateTodoDOM = (todoObj) => {
 //ex 7 & 8
 const renderTodos = (todos) => {
 
-    console.log(todos)
+    fetchTodosFromLocalStorage()
     const filteredTodos = todos.filter(todo =>
         todo.title.toLowerCase().includes(filters.searchTitle.toLowerCase())
     )
@@ -88,7 +106,7 @@ const renderTodos = (todos) => {
     }
     const todoList = document.querySelector('#todos')
     todoList.innerHTML = ''
-    console.log(filteredTodos)
+
 
     if (filteredTodos.length > 0) {
         filteredTodos.forEach(todo => {
@@ -115,6 +133,7 @@ const removeTodo = (title) => {
     })
     if (todoIndex > -1) {
         todos.splice(todoIndex, 1)
+        saveTodosToLocalStorage()
     }
 }
 
@@ -123,7 +142,10 @@ const toggleTodo = (title) => {
     const todo = todos.find((todo) => todo.title.toLowerCase() === title.toLowerCase())
     if (todo) {
         todo.completed = !todo.completed
+        saveTodosToLocalStorage()
+
     }
+
 }
 
 
@@ -163,3 +185,13 @@ document.querySelector('#show-unfinished').addEventListener('change', (e) => {
     })
     renderTodos(todos)
 })
+
+window.addEventListener('storage', (e) => {
+    if (e.key === 'todos') {
+        fetchTodosFromLocalStorage()
+        renderTodos(todos)
+    }
+})
+
+fetchTodosFromLocalStorage()
+renderTodos(todos)
